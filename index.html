@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Record Sheet in Math</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- important for mobile scaling -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 10px;
+      font-size: 16px; /* base size for mobile readability */
+    }
+    h2 {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .info-boxes {
+      margin-bottom: 20px;
+    }
+    .info-boxes label {
+      display: block; /* stack labels on mobile */
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+    .info-boxes input {
+      margin-bottom: 12px;
+      padding: 8px;
+      width: 95%; /* full width on mobile */
+      max-width: 400px;
+      font-size: 16px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      display: block;          /* allow horizontal scroll */
+      overflow-x: auto;
+      white-space: nowrap;     /* prevent wrapping */
+    }
+    th, td {
+      border: 1px solid #ccc;
+      min-width: 100px;
+      height: 32px;
+      text-align: left;
+      padding: 6px;
+      font-size: 15px;
+    }
+    th {
+      background: #f0f0f0;
+      font-weight: bold;
+      text-align: center;
+      position: sticky; /* keep headers visible when scrolling */
+      top: 0;
+      z-index: 2;
+    }
+    td[contenteditable="true"]:focus {
+      outline: 2px solid dodgerblue;
+      background: #eef6ff;
+    }
+    button {
+      margin-top: 15px;
+      margin-right: 10px;
+      padding: 12px 20px; /* larger tap target */
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+    }
+    button:active {
+      background: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <h2>Record Sheet in Math</h2>
+
+  <div class="info-boxes">
+    <label for="leaderName">Leader's Name:</label>
+    <input type="text" id="leaderName">
+
+    <label for="section">Section:</label>
+    <input type="text" id="section">
+
+    <label for="groupNumber">Group Number:</label>
+    <input type="text" id="groupNumber">
+  </div>
+
+  <table id="spreadsheet">
+    <thead>
+      <tr>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Activity</th>
+        <th>Practice</th>
+        <th>Quiz</th>
+        <th>Recitation</th>
+        <th>Lessons</th>
+        <th>Summative</th>
+        <th>Flashcards</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Generate 11 rows -->
+      <script>
+        const tbody = document.currentScript.parentElement;
+        for (let i = 0; i < 11; i++) {
+          const row = document.createElement("tr");
+          for (let j = 0; j < 9; j++) {
+            const cell = document.createElement("td");
+            cell.setAttribute("contenteditable", "true");
+            row.appendChild(cell);
+          }
+          tbody.appendChild(row);
+        }
+      </script>
+    </tbody>
+  </table>
+
+  <button id="saveBtn">Save Data</button>
+  <button id="copyBtn">Copy as CSV</button>
+
+  <script>
+    const saveBtn = document.getElementById("saveBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const table = document.getElementById("spreadsheet");
+
+    // Load saved data if available
+    window.onload = () => {
+      const saved = localStorage.getItem("spreadsheetData");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        document.getElementById("leaderName").value = parsed.leaderName || "";
+        document.getElementById("section").value = parsed.section || "";
+        document.getElementById("groupNumber").value = parsed.groupNumber || "";
+
+        const data = parsed.table || [];
+        const rows = table.querySelectorAll("tbody tr");
+        rows.forEach((row, i) => {
+          const cells = row.querySelectorAll("td");
+          cells.forEach((cell, j) => {
+            cell.textContent = data[i]?.[j] || "";
+          });
+        });
+      }
+    };
+
+    // Save data to localStorage
+    saveBtn.addEventListener("click", () => {
+      const rows = table.querySelectorAll("tbody tr");
+      const data = [];
+      rows.forEach(row => {
+        const rowData = [];
+        row.querySelectorAll("td").forEach(cell => {
+          rowData.push(cell.textContent.trim());
+        });
+        data.push(rowData);
+      });
+
+      const record = {
+        leaderName: document.getElementById("leaderName").value.trim(),
+        section: document.getElementById("section").value.trim(),
+        groupNumber: document.getElementById("groupNumber").value.trim(),
+        table: data
+      };
+
+      localStorage.setItem("spreadsheetData", JSON.stringify(record));
+      alert("Record saved!");
+    });
+
+    // Copy table as CSV to clipboard (mobile-friendly, no headers)
+    copyBtn.addEventListener("click", () => {
+      const rows = table.querySelectorAll("tbody tr");
+      const data = [];
+      rows.forEach(row => {
+        const rowData = [];
+        row.querySelectorAll("td").forEach(cell => {
+          rowData.push(cell.textContent.trim());
+        });
+        // Only add non-empty rows
+        if (rowData.some(cell => cell !== "")) {
+          data.push(rowData);
+        }
+      });
+
+      // Build CSV string without headers
+      let csv = "";
+      data.forEach(row => {
+        csv += row.join(",") + "\n";
+      });
+
+      // Leader info one per line
+      const leaderInfo =
+        `Leader: ${document.getElementById("leaderName").value.trim()}\n` +
+        `Section: ${document.getElementById("section").value.trim()}\n` +
+        `Group: ${document.getElementById("groupNumber").value.trim()}\n\n`;
+
+      const finalCSV = leaderInfo + csv;
+
+      // Try modern clipboard API first
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(finalCSV).then(() => {
+          alert("CSV copied to clipboard! You can now paste it in Messenger.");
+        }).catch(err => {
+          console.error("Clipboard API failed, using fallback:", err);
+          fallbackCopy(finalCSV);
+        });
+      } else {
+        // Fallback for mobile browsers
+        fallbackCopy(finalCSV);
+      }
+    });
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.style.position = "fixed"; // prevent scrolling to bottom
+      textarea.focus();
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        alert("CSV copied to clipboard! You can now paste it in Messenger.");
+      } catch (err) {
+        alert("Failed to copy CSV.");
+      }
+      document.body.removeChild(textarea);
+    }
+  </script>
+</body>
+</html>
