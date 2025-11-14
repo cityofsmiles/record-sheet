@@ -3,74 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <title>Record Sheet in Math</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- important for mobile scaling -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 10px;
-      font-size: 16px; /* base size for mobile readability */
-    }
-    h2 {
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    .info-boxes {
-      margin-bottom: 20px;
-    }
-    .info-boxes label {
-      display: block; /* stack labels on mobile */
-      margin-bottom: 4px;
-      font-weight: bold;
-    }
-    .info-boxes input {
-      margin-bottom: 12px;
-      padding: 8px;
-      width: 95%; /* full width on mobile */
-      max-width: 400px;
-      font-size: 16px;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      display: block;          /* allow horizontal scroll */
-      overflow-x: auto;
-      white-space: nowrap;     /* prevent wrapping */
-    }
-    th, td {
-      border: 1px solid #ccc;
-      min-width: 100px;
-      height: 32px;
-      text-align: left;
-      padding: 6px;
-      font-size: 15px;
-    }
-    th {
-      background: #f0f0f0;
-      font-weight: bold;
-      text-align: center;
-      position: sticky; /* keep headers visible when scrolling */
-      top: 0;
-      z-index: 2;
-    }
-    td[contenteditable="true"]:focus {
-      outline: 2px solid dodgerblue;
-      background: #eef6ff;
-    }
-    button {
-      margin-top: 15px;
-      margin-right: 10px;
-      padding: 12px 20px; /* larger tap target */
-      font-size: 16px;
-      cursor: pointer;
+    body { font-family: Arial, sans-serif; margin: 10px; font-size: 16px; }
+    h2 { margin-bottom: 10px; text-align: center; }
+    .info-boxes { margin-bottom: 20px; }
+    .info-boxes label { display: block; margin-bottom: 4px; font-weight: bold; }
+    .info-boxes input { margin-bottom: 12px; padding: 8px; width: 95%; max-width: 400px; font-size: 16px; }
+    table { border-collapse: collapse; width: 100%; overflow-x: auto; display: block; margin-bottom: 10px; }
+    th, td { border: 1px solid #ccc; min-width: 60px; padding: 4px; }
+    th { background: #f0f0f0; position: sticky; top: 0; }
+    input.cell { width: 100%; border: none; padding: 4px; font-size: 15px; box-sizing: border-box; }
+    input.cell:focus { outline: 2px solid dodgerblue; background: #eef6ff; }
+    input.cell[readonly] { background: #f3f3f3; color: #555; cursor: default; }
+    button { margin-top: 10px; margin-right: 10px; padding: 12px 20px; font-size: 16px; cursor: pointer; }
+    #status {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      color: #fff;
+      padding: 8px 16px;
       border-radius: 6px;
-      border: 1px solid #ccc;
-      background: #f9f9f9;
+      font-size: 15px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease-out;
+      z-index: 999;
     }
-    button:active {
-      background: #e0e0e0;
-    }
+    .table-section { margin-bottom: 30px; }
   </style>
 </head>
+
 <body>
   <h2>Record Sheet in Math</h2>
 
@@ -85,146 +50,400 @@
     <input type="text" id="groupNumber">
   </div>
 
-  <table id="spreadsheet">
-    <thead>
-      <tr>
-        <th>Last Name</th>
-        <th>First Name</th>
-        <th>Activity</th>
-        <th>Practice</th>
-        <th>Quiz</th>
-        <th>Recitation</th>
-        <th>Lessons</th>
-        <th>Summative</th>
-        <th>Flashcards</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Generate 11 rows -->
-      <script>
-        const tbody = document.currentScript.parentElement;
-        for (let i = 0; i < 11; i++) {
-          const row = document.createElement("tr");
-          for (let j = 0; j < 9; j++) {
-            const cell = document.createElement("td");
-            cell.setAttribute("contenteditable", "true");
-            row.appendChild(cell);
-          }
-          tbody.appendChild(row);
-        }
-      </script>
-    </tbody>
-  </table>
+  <!-- Table 1 section -->
+  <div class="table-section">
+    <table id="table1">
+      <thead>
+        <tr>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <!-- Editable headers 3–27 -->
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th>
+          <th>Activity</th>
+        </tr>
+      </thead>
+      <tbody id="table1-tbody"></tbody>
+    </table>
+    <button id="saveBtnTable1">Save Activity</button>
+    <button id="clearBtnTable1">Clear Activity</button>
+  </div>
 
-  <button id="saveBtn">Save Data</button>
-  <button id="copyBtn">Copy as CSV</button>
+  <!-- Table 2 section -->
+  <div class="table-section">
+    <table id="table2">
+      <thead>
+        <tr>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <!-- Editable headers 3–27 -->
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th>
+          <th>Practice</th>
+        </tr>
+      </thead>
+      <tbody id="table2-tbody"></tbody>
+    </table>
+    <button id="saveBtnTable2">Save Practice</button>
+    <button id="clearBtnTable2">Clear Practice</button>
+  </div>
+
+  <!-- Table 3 section -->
+  <div class="table-section">
+    <table id="table3">
+      <thead>
+        <tr>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <!-- Editable headers 3–12 -->
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+          <th>Quiz</th>
+          <th>Recitation</th>
+          <th>Lessons</th>
+          <th>Summative</th>
+        </tr>
+      </thead>
+      <tbody id="table3-tbody"></tbody>
+    </table>
+    <button id="saveBtnTable3">Save QRLS</button>
+    <button id="clearBtnTable3">Clear QRLS</button>
+  </div>
+
+  <!-- Table 4 section -->
+  <div class="table-section">
+    <table id="table4">
+      <thead>
+        <tr>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <!-- Numbered headers 1–35 -->
+          <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+          <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+          <th>11</th><th>12</th><th>13</th><th>14</th><th>15</th>
+          <th>16</th><th>17</th><th>18</th><th>19</th><th>20</th>
+          <th>21</th><th>22</th><th>23</th><th>24</th><th>25</th>
+          <th>26</th><th>27</th><th>28</th><th>29</th><th>30</th>
+          <th>31</th><th>32</th><th>33</th><th>34</th><th>35</th>
+          <th>Flashcards</th>
+        </tr>
+      </thead>
+      <tbody id="table4-tbody"></tbody>
+    </table>
+    <button id="saveBtnTable4">Save Flashcards</button>
+    <button id="clearBtnTable4">Clear Flashcards</button>
+  </div>
+
+  <!-- Table 5 section -->
+  <div class="table-section">
+    <table id="table5">
+      <thead>
+        <tr>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <th>Activity</th>
+          <th>Practice</th>
+          <th>Quiz</th>
+          <th>Recitation</th>
+          <th>Lessons</th>
+          <th>Summative</th>
+          <th>Flashcards</th>
+        </tr>
+      </thead>
+      <tbody id="table5-tbody"></tbody>
+    </table>
+    <button id="saveBtn">Save All</button>
+    <button id="clearAllBtn">Clear All</button>
+  </div>
+
+  <button id="copyBtn">Copy CSV</button>
+  <div id="status"></div>
 
   <script>
-    const saveBtn = document.getElementById("saveBtn");
-    const copyBtn = document.getElementById("copyBtn");
-    const table = document.getElementById("spreadsheet");
+    const ROW_COUNT = 11;
+    const STORAGE_KEY = "math_record_sheet_v14";
 
-    // Load saved data if available
-    window.onload = () => {
-      const saved = localStorage.getItem("spreadsheetData");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        document.getElementById("leaderName").value = parsed.leaderName || "";
-        document.getElementById("section").value = parsed.section || "";
-        document.getElementById("groupNumber").value = parsed.groupNumber || "";
+    const status = document.getElementById("status");
+    const leader = document.getElementById("leaderName");
+    const section = document.getElementById("section");
+    const group = document.getElementById("groupNumber");
 
-        const data = parsed.table || [];
-        const rows = table.querySelectorAll("tbody tr");
-        rows.forEach((row, i) => {
-          const cells = row.querySelectorAll("td");
-          cells.forEach((cell, j) => {
-            cell.textContent = data[i]?.[j] || "";
-          });
+    const table1Tbody = document.getElementById("table1-tbody");
+    const table2Tbody = document.getElementById("table2-tbody");
+    const table3Tbody = document.getElementById("table3-tbody");
+    const table4Tbody = document.getElementById("table4-tbody");
+    const table5Tbody = document.getElementById("table5-tbody");
+
+    const table1HeadInputs = document.querySelectorAll("#table1 thead input.cell");
+    const table2HeadInputs = document.querySelectorAll("#table2 thead input.cell");
+    const table3HeadInputs = document.querySelectorAll("#table3 thead input.cell");
+
+    function renderRow(tbodyElement, columnCount, data = [], readOnlyColumns = []) {
+      const tr = document.createElement("tr");
+      for (let i = 0; i < columnCount; i++) {
+        const td = document.createElement("td");
+        const input = document.createElement("input");
+        input.className = "cell";
+        input.value = data[i] || "";
+        if (readOnlyColumns.includes(i)) input.readOnly = true;
+        td.appendChild(input);
+        tr.appendChild(td);
+      }
+      tbodyElement.appendChild(tr);
+    }
+
+    function initialLoad() {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
+
+      // Table 1
+      if(saved.table1) saved.table1.forEach(r=>renderRow(table1Tbody,28,r,[27]));
+      else for(let i=0;i<ROW_COUNT;i++) renderRow(table1Tbody,28,[],[27]);
+      if(saved.table1Headers) table1HeadInputs.forEach((input,i)=>input.value=saved.table1Headers[i]||"");
+
+      // Table 2
+      if(saved.table2) saved.table2.forEach(r=>renderRow(table2Tbody,28,r,[27]));
+      else for(let i=0;i<ROW_COUNT;i++) renderRow(table2Tbody,28,[],[27]);
+      if(saved.table2Headers) table2HeadInputs.forEach((input,i)=>input.value=saved.table2Headers[i]||"");
+
+      // Table 3
+      if(saved.table3) saved.table3.forEach(r=>renderRow(table3Tbody,16,r,[12]));
+      else for(let i=0;i<ROW_COUNT;i++) renderRow(table3Tbody,16,[...Array(16)].map(()=>""),[12]);
+      if(saved.table3Headers) table3HeadInputs.forEach((input,i)=>input.value=saved.table3Headers[i]||"");
+
+      // Table 4
+      if(saved.table4) saved.table4.forEach(r=>renderRow(table4Tbody,38,r,[37]));
+      else for(let i=0;i<ROW_COUNT;i++) renderRow(table4Tbody,38,[...Array(38)].map(()=>""),[37]);
+
+      // Table 5
+      if(saved.table5) saved.table5.forEach(r=>renderRow(table5Tbody,9,r,[0,1,2,3,4,5,6,7,8]));
+      else for(let i=0;i<ROW_COUNT;i++) renderRow(table5Tbody,9,[],[0,1,2,3,4,5,6,7,8]);
+
+      setupFormulas();
+    }
+
+    function setupFormulas() {
+      const t1Rows = table1Tbody.querySelectorAll("tr");
+      const t2Rows = table2Tbody.querySelectorAll("tr");
+      const t3Rows = table3Tbody.querySelectorAll("tr");
+      const t4Rows = table4Tbody.querySelectorAll("tr");
+      const t5Rows = table5Tbody.querySelectorAll("tr");
+
+      t1Rows.forEach((row,i)=>{
+        const t1Inputs = row.querySelectorAll("input.cell");
+        const t2Inputs = t2Rows[i].querySelectorAll("input.cell");
+        const t3Inputs = t3Rows[i].querySelectorAll("input.cell");
+        const t4Inputs = t4Rows[i].querySelectorAll("input.cell");
+        const t5Inputs = t5Rows[i].querySelectorAll("input.cell");
+
+        const recalc = ()=>{
+          // Table1 Activity sum (columns 3–27)
+          let actSum=0; for(let j=2;j<=26;j++){const val=parseFloat(t1Inputs[j].value);if(!isNaN(val)) actSum+=val;}
+          t1Inputs[27].value=actSum; t5Inputs[2].value=actSum;
+
+          // Mirror first two columns
+          t2Inputs[0].value=t1Inputs[0].value; t2Inputs[1].value=t1Inputs[1].value;
+          t3Inputs[0].value=t1Inputs[0].value; t3Inputs[1].value=t1Inputs[1].value;
+          t4Inputs[0].value=t1Inputs[0].value; t4Inputs[1].value=t1Inputs[1].value;
+          t5Inputs[0].value=t1Inputs[0].value; t5Inputs[1].value=t1Inputs[1].value;
+
+          // Table2 Practice sum
+          let prSum=0; for(let j=2;j<=26;j++){const val=parseFloat(t2Inputs[j].value);if(!isNaN(val)) prSum+=val;}
+          t2Inputs[27].value=prSum; t5Inputs[3].value=prSum;
+
+          // Table3 Quiz sum (columns 3–12)
+          let quizSum=0; for(let j=2;j<=11;j++){const val=parseFloat(t3Inputs[j].value);if(!isNaN(val)) quizSum+=val;}
+          t3Inputs[12].value=quizSum; t5Inputs[4].value=quizSum;
+
+          // Reflect Recitation, Lessons, Summative
+          t5Inputs[5].value=t3Inputs[13].value;
+          t5Inputs[6].value=t3Inputs[14].value;
+          t5Inputs[7].value=t3Inputs[15].value;
+
+          // Table4 Flashcards sum (columns 3–37)
+          let fcSum=0; for(let j=2;j<=36;j++){const val=parseFloat(t4Inputs[j].value);if(!isNaN(val)) fcSum+=val;}
+          t4Inputs[37].value=fcSum; t5Inputs[8].value=fcSum;
+        };
+
+        t1Inputs.forEach(input=>input.addEventListener("input", recalc));
+        t2Inputs.forEach((input,j)=>{if(j<27) input.addEventListener("input", recalc)});
+        t3Inputs.forEach((input,j)=>{if(j<12 || j>=13) input.addEventListener("input", recalc)});
+        t4Inputs.forEach((input,j)=>{if(j<37) input.addEventListener("input", recalc)});
+      });
+    }
+
+    function saveAll() {
+      const getRows = tbody => [...tbody.querySelectorAll("tr")].map(tr =>
+        [...tr.querySelectorAll("input.cell")].map(x=>x.value.replace(/,/g," "))
+      );
+
+      const data = {
+        leader: leader.value.trim(),
+        section: section.value.trim(),
+        group: group.value.trim(),
+        table1: getRows(table1Tbody),
+        table1Headers: [...table1HeadInputs].map(x=>x.value.replace(/,/g," ")),
+        table2: getRows(table2Tbody),
+        table2Headers: [...table2HeadInputs].map(x=>x.value.replace(/,/g," ")),
+        table3: getRows(table3Tbody),
+        table3Headers: [...table3HeadInputs].map(x=>x.value.replace(/,/g," ")),
+        table4: getRows(table4Tbody),
+        table5: getRows(table5Tbody)
+      };
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showStatus("Saved");
+    }
+
+    function showStatus(msg){ status.textContent=msg; status.style.opacity="1"; setTimeout(()=>{status.style.opacity="0";},1500); }
+
+    function copyCSV(){
+      // Header info
+      const headerInfo=`Leader: ${leader.value}\nSection: ${section.value}\nGroup: ${group.value}\n\n`;
+      
+      // Table 5 data rows - exclude blank rows (rows where first name or last name is empty)
+      const rows = [...table5Tbody.querySelectorAll("tr")]
+        .map(tr => {
+          const inputs = [...tr.querySelectorAll("input.cell")];
+          return inputs.map(x => `"${x.value.replace(/"/g,'""')}"`).join(",");
+        })
+        .filter(row => {
+          // Extract first two values (Last Name and First Name)
+          const values = row.split(',').slice(0, 2).map(v => v.replace(/"/g, '').trim());
+          // Only include if at least one name field has content
+          return values[0] !== '' || values[1] !== '';
+        })
+        .join("\n");
+
+      const text = headerInfo + rows;
+
+      navigator.clipboard.writeText(text)
+        .then(()=>showStatus("CSV copied"))
+        .catch(()=>{
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+          showStatus("CSV copied");
         });
+    }
+
+    document.getElementById("saveBtn").onclick = saveAll;
+    document.getElementById("saveBtnTable1").onclick = saveAll;
+    document.getElementById("saveBtnTable2").onclick = saveAll;
+    document.getElementById("saveBtnTable3").onclick = saveAll;
+    document.getElementById("saveBtnTable4").onclick = saveAll;
+    document.getElementById("copyBtn").onclick = copyCSV;
+
+    document.getElementById("clearAllBtn").onclick = function() {
+      if (confirm("Are you sure you want to clear ALL data from all tables? This cannot be undone!")) {
+        // Clear all table data including names and calculated fields
+        const allTables = [
+          {tbody: table1Tbody, headers: table1HeadInputs},
+          {tbody: table2Tbody, headers: table2HeadInputs},
+          {tbody: table3Tbody, headers: table3HeadInputs},
+          {tbody: table4Tbody, headers: null},
+          {tbody: table5Tbody, headers: null}
+        ];
+        
+        allTables.forEach(({tbody, headers}) => {
+          const rows = tbody.querySelectorAll("tr");
+          rows.forEach(row => {
+            const inputs = row.querySelectorAll("input.cell");
+            inputs.forEach(input => {
+              // Clear ALL cells including readonly/calculated fields
+              input.value = "";
+            });
+          });
+          
+          if (headers) {
+            headers.forEach(h => h.value = "");
+          }
+        });
+        
+        // Clear info fields
+        leader.value = "";
+        section.value = "";
+        group.value = "";
+        
+        showStatus("All data cleared");
+        saveAll();
       }
     };
 
-    // Save data to localStorage
-    saveBtn.addEventListener("click", () => {
-      const rows = table.querySelectorAll("tbody tr");
-      const data = [];
-      rows.forEach(row => {
-        const rowData = [];
-        row.querySelectorAll("td").forEach(cell => {
-          rowData.push(cell.textContent.trim());
-        });
-        data.push(rowData);
-      });
-
-      const record = {
-        leaderName: document.getElementById("leaderName").value.trim(),
-        section: document.getElementById("section").value.trim(),
-        groupNumber: document.getElementById("groupNumber").value.trim(),
-        table: data
-      };
-
-      localStorage.setItem("spreadsheetData", JSON.stringify(record));
-      alert("Record saved!");
-    });
-
-    // Copy table as CSV to clipboard (mobile-friendly, no headers)
-    copyBtn.addEventListener("click", () => {
-      const rows = table.querySelectorAll("tbody tr");
-      const data = [];
-      rows.forEach(row => {
-        const rowData = [];
-        row.querySelectorAll("td").forEach(cell => {
-          rowData.push(cell.textContent.trim());
-        });
-        // Only add non-empty rows
-        if (rowData.some(cell => cell !== "")) {
-          data.push(rowData);
-        }
-      });
-
-      // Build CSV string without headers
-      let csv = "";
-      data.forEach(row => {
-        csv += row.join(",") + "\n";
-      });
-
-      // Leader info one per line
-      const leaderInfo =
-        `Leader: ${document.getElementById("leaderName").value.trim()}\n` +
-        `Section: ${document.getElementById("section").value.trim()}\n` +
-        `Group: ${document.getElementById("groupNumber").value.trim()}\n\n`;
-
-      const finalCSV = leaderInfo + csv;
-
-      // Try modern clipboard API first
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(finalCSV).then(() => {
-          alert("CSV copied to clipboard! You can now paste it in Messenger.");
-        }).catch(err => {
-          console.error("Clipboard API failed, using fallback:", err);
-          fallbackCopy(finalCSV);
-        });
-      } else {
-        // Fallback for mobile browsers
-        fallbackCopy(finalCSV);
+    document.getElementById("clearBtnTable1").onclick = function() {
+      if (confirm("Are you sure you want to clear all Activity data?")) {
+        clearTable(table1Tbody, table1HeadInputs);
       }
-    });
-
-    function fallbackCopy(text) {
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.style.position = "fixed"; // prevent scrolling to bottom
-      textarea.focus();
-      textarea.select();
-      try {
-        document.execCommand("copy");
-        alert("CSV copied to clipboard! You can now paste it in Messenger.");
-      } catch (err) {
-        alert("Failed to copy CSV.");
+    };
+    
+    document.getElementById("clearBtnTable2").onclick = function() {
+      if (confirm("Are you sure you want to clear all Practice data?")) {
+        clearTable(table2Tbody, table2HeadInputs);
       }
-      document.body.removeChild(textarea);
+    };
+    
+    document.getElementById("clearBtnTable3").onclick = function() {
+      if (confirm("Are you sure you want to clear all QRLS data?")) {
+        clearTable(table3Tbody, table3HeadInputs);
+      }
+    };
+    
+    document.getElementById("clearBtnTable4").onclick = function() {
+      if (confirm("Are you sure you want to clear all Flashcards data?")) {
+        clearTable(table4Tbody, null);
+      }
+    };
+
+    function clearTable(tbody, headers) {
+      const rows = tbody.querySelectorAll("tr");
+      rows.forEach(row => {
+        const inputs = row.querySelectorAll("input.cell");
+        inputs.forEach((input, index) => {
+          // Skip first two columns (Last Name and First Name) and readonly cells
+          if (index >= 2 && !input.readOnly) {
+            input.value = "";
+          }
+        });
+      });
+      
+      if (headers) {
+        headers.forEach(h => h.value = "");
+      }
+      
+      showStatus("Cleared");
+      saveAll();
     }
+
+    window.onbeforeunload = saveAll;
+
+    initialLoad();
   </script>
 </body>
 </html>
