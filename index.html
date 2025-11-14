@@ -220,6 +220,11 @@
     function initialLoad() {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
 
+      // Load info fields
+      leader.value = saved.leader || "";
+      section.value = saved.section || "";
+      group.value = saved.group || "";
+
       // Table 1
       if(saved.table1) saved.table1.forEach(r=>renderRow(table1Tbody,28,r,[27]));
       else for(let i=0;i<ROW_COUNT;i++) renderRow(table1Tbody,28,[],[27]);
