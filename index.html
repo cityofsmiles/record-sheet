@@ -16,19 +16,19 @@
       min-width: 800px;
     }
     th, td { 
-      border: 1px solid #e0e0e0;
+      border: 1px solid #ccc;
       min-width: 60px;
       padding: 0;
     }
     th { 
-      background: #f8f9fa;
+      background: #f0f0f0;
       position: sticky;
       top: 0;
-      font-weight: 600;
-      color: #333;
-      font-size: 13px;
       z-index: 10;
-      padding: 8px 4px;
+      padding: 4px;
+    }
+    td {
+      background: #fff;
     }
     /* Freeze first two columns (Last Name and First Name) */
     th:nth-child(1), td:nth-child(1) {
@@ -44,11 +44,11 @@
       z-index: 5;
     }
     th:nth-child(1) {
-      background: #f8f9fa;
+      background: #f0f0f0;
       z-index: 15;
     }
     th:nth-child(2) {
-      background: #f8f9fa;
+      background: #f0f0f0;
       z-index: 15;
     }
     input.cell { 
@@ -76,7 +76,9 @@
       transition: opacity 0.15s ease-out;
       z-index: 999;
     }
-    .table-section { margin-bottom: 30px; overflow-x: auto; }
+    .table-section { margin-bottom: 30px; }
+    .table-wrapper { overflow-x: auto; }
+    .button-container { margin-top: 10px; }
   </style>
 </head>
 
@@ -96,133 +98,153 @@
 
   <!-- Table 1 section -->
   <div class="table-section">
-    <table id="table1">
-      <thead>
-        <tr>
-          <th>Last Name</th>
-          <th>First Name</th>
-          <!-- Editable headers 3–27 -->
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th>
-          <th>Activity</th>
-        </tr>
-      </thead>
-      <tbody id="table1-tbody"></tbody>
-    </table>
-    <button id="saveBtnTable1">Save Activity</button>
-    <button id="clearBtnTable1">Clear Activity</button>
+    <div class="table-wrapper">
+      <table id="table1">
+        <thead>
+          <tr>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <!-- Editable headers 3–27 -->
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th>
+            <th>Activity</th>
+          </tr>
+        </thead>
+        <tbody id="table1-tbody"></tbody>
+      </table>
+    </div>
+    <div class="button-container">
+      <button id="saveBtnTable1">Save Activity</button>
+      <button id="clearBtnTable1">Clear Activity</button>
+    </div>
   </div>
 
   <!-- Table 2 section -->
   <div class="table-section">
-    <table id="table2">
-      <thead>
-        <tr>
-          <th>Last Name</th>
-          <th>First Name</th>
-          <!-- Editable headers 3–27 -->
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th>
-          <th>Practice</th>
-        </tr>
-      </thead>
-      <tbody id="table2-tbody"></tbody>
-    </table>
-    <button id="saveBtnTable2">Save Practice</button>
-    <button id="clearBtnTable2">Clear Practice</button>
+    <div class="table-wrapper">
+      <table id="table2">
+        <thead>
+          <tr>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <!-- Editable headers 3–27 -->
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th>
+            <th>Practice</th>
+          </tr>
+        </thead>
+        <tbody id="table2-tbody"></tbody>
+      </table>
+    </div>
+    <div class="button-container">
+      <button id="saveBtnTable2">Save Practice</button>
+      <button id="clearBtnTable2">Clear Practice</button>
+    </div>
   </div>
 
   <!-- Table 3 section -->
   <div class="table-section">
-    <table id="table3">
-      <thead>
-        <tr>
-          <th>Last Name</th>
-          <th>First Name</th>
-          <!-- Editable headers 3–12 -->
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
-          <th>Quiz</th>
-          <th>Recitation</th>
-          <th>Lessons</th>
-          <th>Summative</th>
-        </tr>
-      </thead>
-      <tbody id="table3-tbody"></tbody>
-    </table>
-    <button id="saveBtnTable3">Save QRLS</button>
-    <button id="clearBtnTable3">Clear QRLS</button>
+    <div class="table-wrapper">
+      <table id="table3">
+        <thead>
+          <tr>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <!-- Editable headers 3–12 -->
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
+            <th>Quiz</th>
+            <th>Recitation</th>
+            <th>Lessons</th>
+            <th>Summative</th>
+          </tr>
+        </thead>
+        <tbody id="table3-tbody"></tbody>
+      </table>
+    </div>
+    <div class="button-container">
+      <button id="saveBtnTable3">Save QRLS</button>
+      <button id="clearBtnTable3">Clear QRLS</button>
+    </div>
   </div>
 
   <!-- Table 4 section -->
   <div class="table-section">
-    <table id="table4">
-      <thead>
-        <tr>
-          <th>Last Name</th>
-          <th>First Name</th>
-          <!-- Numbered headers 1–35 -->
-          <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
-          <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
-          <th>11</th><th>12</th><th>13</th><th>14</th><th>15</th>
-          <th>16</th><th>17</th><th>18</th><th>19</th><th>20</th>
-          <th>21</th><th>22</th><th>23</th><th>24</th><th>25</th>
-          <th>26</th><th>27</th><th>28</th><th>29</th><th>30</th>
-          <th>31</th><th>32</th><th>33</th><th>34</th><th>35</th>
-          <th>Flashcards</th>
-        </tr>
-      </thead>
-      <tbody id="table4-tbody"></tbody>
-    </table>
-    <button id="saveBtnTable4">Save Flashcards</button>
-    <button id="clearBtnTable4">Clear Flashcards</button>
+    <div class="table-wrapper">
+      <table id="table4">
+        <thead>
+          <tr>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <!-- Numbered headers 1–35 -->
+            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+            <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+            <th>11</th><th>12</th><th>13</th><th>14</th><th>15</th>
+            <th>16</th><th>17</th><th>18</th><th>19</th><th>20</th>
+            <th>21</th><th>22</th><th>23</th><th>24</th><th>25</th>
+            <th>26</th><th>27</th><th>28</th><th>29</th><th>30</th>
+            <th>31</th><th>32</th><th>33</th><th>34</th><th>35</th>
+            <th>Flashcards</th>
+          </tr>
+        </thead>
+        <tbody id="table4-tbody"></tbody>
+      </table>
+    </div>
+    <div class="button-container">
+      <button id="saveBtnTable4">Save Flashcards</button>
+      <button id="clearBtnTable4">Clear Flashcards</button>
+    </div>
   </div>
 
   <!-- Table 5 section -->
   <div class="table-section">
-    <table id="table5">
-      <thead>
-        <tr>
-          <th>Last Name</th>
-          <th>First Name</th>
-          <th>Activity</th>
-          <th>Practice</th>
-          <th>Quiz</th>
-          <th>Recitation</th>
-          <th>Lessons</th>
-          <th>Summative</th>
-          <th>Flashcards</th>
-        </tr>
-      </thead>
-      <tbody id="table5-tbody"></tbody>
-    </table>
-    <button id="saveBtn">Save All</button>
-    <button id="clearAllBtn">Clear All</button>
+    <div class="table-wrapper">
+      <table id="table5">
+        <thead>
+          <tr>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Activity</th>
+            <th>Practice</th>
+            <th>Quiz</th>
+            <th>Recitation</th>
+            <th>Lessons</th>
+            <th>Summative</th>
+            <th>Flashcards</th>
+          </tr>
+        </thead>
+        <tbody id="table5-tbody"></tbody>
+      </table>
+    </div>
+    <div class="button-container">
+      <button id="saveBtn">Save All</button>
+      <button id="clearAllBtn">Clear All</button>
+    </div>
   </div>
 
   <button id="copyBtn">Copy CSV</button>
