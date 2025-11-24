@@ -4,13 +4,6 @@
   <meta charset="UTF-8">
   <title>Record Sheet in Math</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Track math activities, practices, quizzes, and more">
-  <meta name="theme-color" content="#4285f4">
-  <link rel="manifest" href="#" id="manifest-placeholder">
-  <link rel="icon" type="image/png" href="#" id="icon-placeholder">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Math Records">
   <style>
     body { font-family: Arial, sans-serif; margin: 10px; font-size: 16px; }
     h2 { margin-bottom: 10px; text-align: center; }
@@ -37,6 +30,7 @@
     td {
       background: #fff;
     }
+    /* Freeze first two columns (Last Name and First Name) */
     th:nth-child(1), td:nth-child(1) {
       position: sticky;
       left: 0;
@@ -85,44 +79,11 @@
     .table-section { margin-bottom: 30px; }
     .table-wrapper { overflow-x: auto; }
     .button-container { margin-top: 10px; }
-    
-    #installPrompt {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #4285f4;
-      color: white;
-      padding: 15px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      display: none;
-      z-index: 1000;
-      max-width: 300px;
-    }
-    #installPrompt button {
-      background: white;
-      color: #4285f4;
-      border: none;
-      padding: 8px 16px;
-      margin: 5px 5px 0 0;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    #installPrompt button:hover {
-      background: #f0f0f0;
-    }
   </style>
 </head>
 
 <body>
   <h2>Record Sheet in Math</h2>
-
-  <div id="installPrompt">
-    <div style="margin-bottom: 10px;">Install this app for offline access!</div>
-    <button id="installBtn">Install</button>
-    <button id="dismissBtn">Dismiss</button>
-  </div>
 
   <div class="info-boxes">
     <label for="leaderName">Leader's Name:</label>
@@ -143,6 +104,7 @@
           <tr>
             <th>Last Name</th>
             <th>First Name</th>
+            <!-- Editable headers 3–27 -->
             <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
             <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
             <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
@@ -176,6 +138,7 @@
           <tr>
             <th>Last Name</th>
             <th>First Name</th>
+            <!-- Editable headers 3–27 -->
             <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
             <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
             <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
@@ -209,6 +172,7 @@
           <tr>
             <th>Last Name</th>
             <th>First Name</th>
+            <!-- Editable headers 3–12 -->
             <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
             <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
             <th><input class="cell" value=""></th><th><input class="cell" value=""></th>
@@ -237,6 +201,7 @@
           <tr>
             <th>Last Name</th>
             <th>First Name</th>
+            <!-- Numbered headers 1–35 -->
             <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
             <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
             <th>11</th><th>12</th><th>13</th><th>14</th><th>15</th>
@@ -286,108 +251,6 @@
   <div id="status"></div>
 
   <script>
-    // PWA Setup
-    const manifestData = {
-      name: "Math Record Sheet",
-      short_name: "Math Records",
-      description: "Track math activities, practices, quizzes, and more",
-      start_url: ".",
-      display: "standalone",
-      background_color: "#ffffff",
-      theme_color: "#4285f4",
-      orientation: "any",
-      icons: [
-        {
-          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%234285f4' width='192' height='192' rx='24'/%3E%3Ctext x='96' y='130' font-size='100' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'%3E∑%3C/text%3E%3C/svg%3E",
-          sizes: "192x192",
-          type: "image/svg+xml",
-          purpose: "any maskable"
-        },
-        {
-          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%234285f4' width='512' height='512' rx='64'/%3E%3Ctext x='256' y='350' font-size='280' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'%3E∑%3C/text%3E%3C/svg%3E",
-          sizes: "512x512",
-          type: "image/svg+xml",
-          purpose: "any maskable"
-        }
-      ]
-    };
-
-    const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
-    const manifestURL = URL.createObjectURL(manifestBlob);
-    document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
-    document.getElementById('icon-placeholder').setAttribute('href', manifestData.icons[0].src);
-
-    // Service Worker Registration
-    if ('serviceWorker' in navigator) {
-      const swCode = `
-        const CACHE_NAME = 'math-record-v1';
-        
-        self.addEventListener('install', (event) => {
-          self.skipWaiting();
-        });
-        
-        self.addEventListener('activate', (event) => {
-          event.waitUntil(clients.claim());
-        });
-        
-        self.addEventListener('fetch', (event) => {
-          event.respondWith(
-            caches.match(event.request).then((response) => {
-              return response || fetch(event.request).then((fetchResponse) => {
-                return caches.open(CACHE_NAME).then((cache) => {
-                  cache.put(event.request, fetchResponse.clone());
-                  return fetchResponse;
-                });
-              });
-            }).catch(() => {
-              return caches.match(event.request);
-            })
-          );
-        });
-      `;
-      
-      const swBlob = new Blob([swCode], { type: 'application/javascript' });
-      const swURL = URL.createObjectURL(swBlob);
-      
-      navigator.serviceWorker.register(swURL).then(() => {
-        console.log('Service Worker registered');
-      }).catch((error) => {
-        console.log('Service Worker registration failed:', error);
-      });
-    }
-
-    // Install Prompt
-    let deferredPrompt;
-    const installPrompt = document.getElementById('installPrompt');
-    const installBtn = document.getElementById('installBtn');
-    const dismissBtn = document.getElementById('dismissBtn');
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installPrompt.style.display = 'block';
-    });
-
-    installBtn.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        installPrompt.style.display = 'none';
-      }
-    });
-
-    dismissBtn.addEventListener('click', () => {
-      installPrompt.style.display = 'none';
-    });
-
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
-      installPrompt.style.display = 'none';
-      showStatus('App installed successfully!');
-    });
-
-    // Original App Code
     const ROW_COUNT = 11;
     const STORAGE_KEY = "math_record_sheet_v14";
 
@@ -423,25 +286,31 @@
     function initialLoad() {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
 
+      // Load info fields
       leader.value = saved.leader || "";
       section.value = saved.section || "";
       group.value = saved.group || "";
 
+      // Table 1
       if(saved.table1) saved.table1.forEach(r=>renderRow(table1Tbody,28,r,[27]));
       else for(let i=0;i<ROW_COUNT;i++) renderRow(table1Tbody,28,[],[27]);
       if(saved.table1Headers) table1HeadInputs.forEach((input,i)=>input.value=saved.table1Headers[i]||"");
 
+      // Table 2
       if(saved.table2) saved.table2.forEach(r=>renderRow(table2Tbody,28,r,[27]));
       else for(let i=0;i<ROW_COUNT;i++) renderRow(table2Tbody,28,[],[27]);
       if(saved.table2Headers) table2HeadInputs.forEach((input,i)=>input.value=saved.table2Headers[i]||"");
 
+      // Table 3
       if(saved.table3) saved.table3.forEach(r=>renderRow(table3Tbody,16,r,[12]));
       else for(let i=0;i<ROW_COUNT;i++) renderRow(table3Tbody,16,[...Array(16)].map(()=>""),[12]);
       if(saved.table3Headers) table3HeadInputs.forEach((input,i)=>input.value=saved.table3Headers[i]||"");
 
+      // Table 4
       if(saved.table4) saved.table4.forEach(r=>renderRow(table4Tbody,38,r,[37]));
       else for(let i=0;i<ROW_COUNT;i++) renderRow(table4Tbody,38,[...Array(38)].map(()=>""),[37]);
 
+      // Table 5
       if(saved.table5) saved.table5.forEach(r=>renderRow(table5Tbody,9,r,[0,1,2,3,4,5,6,7,8]));
       else for(let i=0;i<ROW_COUNT;i++) renderRow(table5Tbody,9,[],[0,1,2,3,4,5,6,7,8]);
 
@@ -463,24 +332,30 @@
         const t5Inputs = t5Rows[i].querySelectorAll("input.cell");
 
         const recalc = ()=>{
+          // Table1 Activity sum (columns 3–27)
           let actSum=0; for(let j=2;j<=26;j++){const val=parseFloat(t1Inputs[j].value);if(!isNaN(val)) actSum+=val;}
           t1Inputs[27].value=actSum; t5Inputs[2].value=actSum;
 
+          // Mirror first two columns
           t2Inputs[0].value=t1Inputs[0].value; t2Inputs[1].value=t1Inputs[1].value;
           t3Inputs[0].value=t1Inputs[0].value; t3Inputs[1].value=t1Inputs[1].value;
           t4Inputs[0].value=t1Inputs[0].value; t4Inputs[1].value=t1Inputs[1].value;
           t5Inputs[0].value=t1Inputs[0].value; t5Inputs[1].value=t1Inputs[1].value;
 
+          // Table2 Practice sum
           let prSum=0; for(let j=2;j<=26;j++){const val=parseFloat(t2Inputs[j].value);if(!isNaN(val)) prSum+=val;}
           t2Inputs[27].value=prSum; t5Inputs[3].value=prSum;
 
+          // Table3 Quiz sum (columns 3–12)
           let quizSum=0; for(let j=2;j<=11;j++){const val=parseFloat(t3Inputs[j].value);if(!isNaN(val)) quizSum+=val;}
           t3Inputs[12].value=quizSum; t5Inputs[4].value=quizSum;
 
+          // Reflect Recitation, Lessons, Summative
           t5Inputs[5].value=t3Inputs[13].value;
           t5Inputs[6].value=t3Inputs[14].value;
           t5Inputs[7].value=t3Inputs[15].value;
 
+          // Table4 Flashcards sum (columns 3–37)
           let fcSum=0; for(let j=2;j<=36;j++){const val=parseFloat(t4Inputs[j].value);if(!isNaN(val)) fcSum+=val;}
           t4Inputs[37].value=fcSum; t5Inputs[8].value=fcSum;
         };
@@ -518,15 +393,19 @@
     function showStatus(msg){ status.textContent=msg; status.style.opacity="1"; setTimeout(()=>{status.style.opacity="0";},1500); }
 
     function copyCSV(){
+      // Header info
       const headerInfo=`Leader: ${leader.value}\nSection: ${section.value}\nGroup: ${group.value}\n\n`;
       
+      // Table 5 data rows - exclude blank rows (rows where first name or last name is empty)
       const rows = [...table5Tbody.querySelectorAll("tr")]
         .map(tr => {
           const inputs = [...tr.querySelectorAll("input.cell")];
           return inputs.map(x => `"${x.value.replace(/"/g,'""')}"`).join(",");
         })
         .filter(row => {
+          // Extract first two values (Last Name and First Name)
           const values = row.split(',').slice(0, 2).map(v => v.replace(/"/g, '').trim());
+          // Only include if at least one name field has content
           return values[0] !== '' || values[1] !== '';
         })
         .join("\n");
@@ -555,6 +434,7 @@
 
     document.getElementById("clearAllBtn").onclick = function() {
       if (confirm("Are you sure you want to clear ALL data from all tables? This cannot be undone!")) {
+        // Clear all table data including names and calculated fields
         const allTables = [
           {tbody: table1Tbody, headers: table1HeadInputs},
           {tbody: table2Tbody, headers: table2HeadInputs},
@@ -568,6 +448,7 @@
           rows.forEach(row => {
             const inputs = row.querySelectorAll("input.cell");
             inputs.forEach(input => {
+              // Clear ALL cells including readonly/calculated fields
               input.value = "";
             });
           });
@@ -577,6 +458,7 @@
           }
         });
         
+        // Clear info fields
         leader.value = "";
         section.value = "";
         group.value = "";
@@ -615,6 +497,7 @@
       rows.forEach(row => {
         const inputs = row.querySelectorAll("input.cell");
         inputs.forEach((input, index) => {
+          // Skip first two columns (Last Name and First Name) and readonly cells
           if (index >= 2 && !input.readOnly) {
             input.value = "";
           }
